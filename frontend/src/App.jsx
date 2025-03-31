@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import ChatMessage from "./components/ChatMessage"
 import ThinkingIndicator from "./components/ThinkingIndicator"
-
+import axios from "axios";
 function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState("")
@@ -15,15 +15,39 @@ function App() {
     scrollToBottom()
   }, [messages])
 
+
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault();
+  
+  if (!input.trim()) return; // Prevent empty submissions
 
-    //Yadavar Saab
+  // Append user message
+  const userMessage = { role: "user", content: input };
+  setMessages((prev) => [...prev, userMessage]);
+  setIsThinking(true); // Show loading indicator
+
+  try {
+    // Send request to backend
+    const response = await axios.post("http://localhost:5009/chat", { message: input });
+    
+    // Append AI response
+    const aiMessage = { role: "ai", content: response.data };
+    setMessages((prev) => [...prev, aiMessage]);
+    console.log();
+  } catch (error) {
+    console.error("Error fetching AI response:", error);
+    setMessages((prev) => [...prev, { role: "ai", content: "Sorry, something went wrong." }]);
   }
+
+  setIsThinking(false); // Hide loading indicator
+  setInput(""); // Clear input field
+};
+
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">

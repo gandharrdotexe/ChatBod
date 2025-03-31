@@ -1,0 +1,27 @@
+/Users/mithra707/Documents/CHATBOD
+├── README.md
+├── directory_structure.txt
+├── js_files_contents.txt
+├── script.py
+├── backend
+└── frontend
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.js
+    ├── tailwind.config.js
+    ├── vite.config.js
+    ├── public
+    │   └── vite.svg
+    └── src
+        ├── App.css
+        ├── App.jsx
+        ├── index.css
+        ├── main.jsx
+        ├── assets
+        │   └── react.svg
+        └── components
+            ├── ChatMessage.jsx
+            └── ThinkingIndicator.jsx
