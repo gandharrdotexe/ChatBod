@@ -33,7 +33,7 @@ function App() {
 
   try {
     // Send request to backend
-    const response = await axios.post("http://localhost:5009/chat", { message: input });
+    const response = await axios.post("http://localhost:5009/chat", { message: input , prevconvo: messages });
     
     // Append AI response
     const aiMessage = { role: "ai", content: response.data };
@@ -44,7 +44,8 @@ function App() {
     setMessages((prev) => [...prev, { role: "ai", content: "Sorry, something went wrong." }]);
   }
 
-  setIsThinking(false); // Hide loading indicator
+    setIsThinking(false); // Hide loading indicator
+    
   setInput(""); // Clear input field
 };
 

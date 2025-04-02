@@ -20,11 +20,33 @@ app.post("/chat", async (req, res, next) => {
 
   try {
     const jsonData = req.body.message;
+    const prevConvo = req.body.prevconvo;
+    let prompt;
+    if (prevConvo.length > 0)
+    {
+      const prevConvoFormatted = prevConvo
+        .map(
+          (entry) => `${entry.role === "user" ? "User" : "AI"}: ${entry.content}`
+        )
+        .join("\n");
 
+       prompt = `You are an AI assistant engaged in an ongoing conversation. Always refer to the previous exchanges before responding to ensure continuity and relevance.
 
-    const prompt = `You are an AI assistant. Respond **only with short, to-the-point answers** unless a detailed response is explicitly required. Keep it simple and precise. \n\nUser Input: ${jsonData}
+Conversation History:
+${prevConvoFormatted}
+
+Now, based on the context above, respond to the following(**do not repeat the conversation history** and **do not mention based on prev conversation**):
+
+User: ${jsonData}
+AI: `;
+
+    }
+    else
+    {
+
+       prompt = `You are an AI assistant. Respond **only with short, to-the-point answers** unless a detailed response is explicitly required. Keep it simple and precise.  \n\nUser Input: ${jsonData}
     )}`;
-
+    }
     const postData = {
       model: "llama3",
       prompt: prompt,
